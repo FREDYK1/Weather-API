@@ -28,6 +28,16 @@ def station_hist(station):
     return render_template("station_hist.html" ,table=station_hist_df.to_html(),
                            station="Station " + station, title="Station " + station + " Weather History")
 
+@page.route("/api/yearly/<station>/<year>")
+def station_yearly_hist(station, year):
+    station_hist_df= pd.read_csv("data_small/TG_STAID" + str(station).zfill(6) + ".txt", skiprows=20)
+    station_hist_df["    DATE"] = station_hist_df["    DATE"].astype(str)
+    station_hist_df = station_hist_df[station_hist_df["    DATE"].str.startswith(str(year))]
+    return render_template("station_yearly_hist.html" ,table=station_hist_df.to_html(),
+                           station="Station " + station, title="Station " + station + " ("+ year.split("-")[0] +
+                                                               " Weather History)")
+
+
 
 if __name__ == "__main__":
     page.run(debug=True)
