@@ -4,10 +4,12 @@ import pandas as pd
 
 page = Flask(__name__)
 
+station_table_df = pd.read_csv("data_small/stations.txt", skiprows=17)
+station_table = station_table_df[["STAID", "STANAME                                 "]]
 
 @page.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html" ,table=station_table.to_html())
 
 @page.route("/api/<station>/<date>")
 def temp(station, date):
