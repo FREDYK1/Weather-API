@@ -21,6 +21,13 @@ def temp(station, date):
         "temperature": temperature
     }
 
+@page.route("/api/<station>")
+def station_hist(station):
+    station_hist_df= pd.read_csv("data_small/TG_STAID" + str(station).zfill(6) + ".txt", skiprows=20,
+                                 parse_dates=["    DATE"])
+    return render_template("station_hist.html" ,table=station_hist_df.to_html(),
+                           station="Station " + station, title="Station " + station + " Weather History")
+
 
 if __name__ == "__main__":
     page.run(debug=True)
